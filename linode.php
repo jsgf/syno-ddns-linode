@@ -11,7 +11,7 @@ $pwd = (string)$argv[2];
 $hostname = (string)$argv[3];
 $ip = (string)$argv[4];
 
-$API_TOKEN = $account;
+$API_TOKEN = $pwd;
 
 // check the hostname contains '.'
 if (strpos($hostname, '.') === false) {
@@ -27,13 +27,13 @@ if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 
 $hostname = explode('.', $hostname);
 $arrayCount = count($hostname);
-if ($arrayCount > 2) {
-    $subDomain = implode('.', array_slice($hostname, 0, $arrayCount-2));
-    $domain = implode('.', array_slice($hostname, $arrayCount-2, 2));
-} else {
-    $subDomain = '@';
-    $domain = implode('.', $hostname);
+if ($arrayCount < 2) {
+	echo 'badparam';
+	exit();
 }
+
+$subDomain = $hostname[0];
+$domain = implode('.', array_slice($hostname, 1, $arrayCount-1));
 
 $post = array(
     'api_key'=>$account,
